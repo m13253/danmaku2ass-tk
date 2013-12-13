@@ -17,26 +17,32 @@ gettext.install('danmaku2ass-qt', os.path.join(os.path.dirname(os.path.abspath(o
 class MainFrame(tkinter.ttk.Frame):
     def __init__(self, master=None):
         super().__init__(master=master)
-        self.pack()
+        self.pack(anchor='center', expand=True, fill='both')
         self.onCreate()
         self.master.update()
         self.master.minsize(self.master.winfo_width(), self.master.winfo_height())
 
     def onCreate(self):
-        self.left_panel = tkinter.ttk.Frame(self, borderwidth=1, relief='solid')
+        self.left_panel = tkinter.ttk.Frame(self, style='White.TFrame', borderwidth=1, relief='solid')
+        self.left_panel.grid(column=2, row=4)
         self.left_panel.tabs = []
-        for i in [_('1. Configure'), _('2. Import Comments'), _('3. Export Subtitles'), _('4. Post-processing')]:
-            new_label = tkinter.ttk.Label(self.left_panel, text=i, justify='left', pad=4)
+        for i, text in enumerate([_('1. Configure'), _('2. Import Comments'), _('3. Export Subtitles'), _('4. Post-processing')]):
+            new_label = tkinter.ttk.Label(self.left_panel, style='White.TLabel', text='\u3000', justify='left', pad=4)
+            new_label.grid(column=1, row=i+1, sticky=(tkinter.N, tkinter.W, tkinter.S, tkinter.E))
+            new_label = tkinter.ttk.Label(self.left_panel, style='White.TLabel', text=text, justify='left', pad=4)
             self.left_panel.tabs.append(new_label)
-            new_label.pack(anchor='nw', expand=True)
+            new_label.grid(column=2, row=i+1, sticky=(tkinter.N, tkinter.W, tkinter.S, tkinter.E))
         self.left_panel.pack(side='left', padx=8, pady=8)
-        self.right_panel = tkinter.ttk.Frame(self, borderwidth=1, relief='solid')
-        self.right_panel.pack(side='right', expand=True, padx=8, pady=8)
+        self.right_panel = tkinter.ttk.Frame(self, style='White.TFrame', borderwidth=1, relief='solid')
+        self.right_panel.pack(side='right', expand=True, fill='both', padx=8, pady=8)
 
 
 
 if __name__ == '__main__':
     tk = tkinter.Tk()
     tk.title('Danmaku2ASS')
+    tkstyle = tkinter.ttk.Style()
+    tkstyle.configure('White.TFrame', background='white')
+    tkstyle.configure('White.TLabel', background='white')
     mainframe = MainFrame(master=tk)
     mainframe.mainloop()
